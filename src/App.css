@@ -1,0 +1,20 @@
+#root {
+  background: white;
+  min-width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  padding: 5rem;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+}
+
+.input {
+  background: white;
+  color: black;
+}

@@ -1,0 +1,77 @@
+.cards {
+  display: flex;
+  flex-direction: column;
+  padding: 0.8rem;
+  max-width: 280px;
+  gap: 5px;
+}
+
+.logodata {
+  display: flex;
+  gap: 7px;
+}
+
+.companyName {
+  padding: 0;
+  margin: 0;
+  font-size: 10px;
+  font-weight: 600;
+  color: rgb(115, 114, 114);
+}
+.jobRole {
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+.details {
+  padding: 0;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.rightdata {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.location {
+  padding-left: 49px;
+  font-size: 10px;
+  font-weight: 600;
+  margin-top: -4px;
+}
+.salary {
+  color: rgb(115, 114, 114);
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+.expfull {
+  color: black;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.exp {
+  color: rgb(115, 114, 114);
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.posted {
+  border: 1px solid rgb(193, 190, 190);
+  border-radius: 30px;
+  box-shadow: 50px;
+  width: fit-content;
+  padding: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 8px;
+  font-weight: 600;
+}
