@@ -7,3 +7,7 @@
   4.this will run the code in development mode. <br>
 
 
+# Task Completed<br>  
+   1.all the tasks completed except the infinite scroll. <br>
+
+
