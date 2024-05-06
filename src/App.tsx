@@ -1,17 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from '@mui/material';
+import { Grid, SelectChangeEvent } from '@mui/material';
 import './App.css';
 import Cards from './components/cards';
 import { setFilteredData } from './redux/slices/cards';
 import { useAppDispatch, useAppSelector } from './hooks/redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import CustomSelect from './components/customSelect';
 
 function App() {
   // global hooks
@@ -21,14 +15,24 @@ function App() {
   // Initialize as empty array where we store original array
   const [originalData, setOriginalData] = useState<any[]>([]);
 
-  console.log(FilteredData, 'in store');
-  console.log(originalData, 'original');
+  // inputs local states
+  const [inputValue, setInputValue] = useState<string>('');
+  const [minExp, setMinExp] = useState<string>('');
+  const [loc, setLoc] = useState<string>('');
+  const [role, setRole] = useState<string>('');
+
+  // filters reset function
+  const resetFilters = () => {
+    setInputValue('');
+    setMinExp('');
+    setLoc('');
+    setRole('');
+    dispatch(setFilteredData(originalData));
+  };
 
   // filters on companyname,location,minexperience,minpay and role is done and no data on tech stack available in response
 
   // company name input and filter
-
-  const [inputValue, setInputValue] = useState<string>('');
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.trim().toLowerCase(); // Trim whitespace
@@ -46,9 +50,7 @@ function App() {
     }
   };
 
-  // min exp input and filter
-
-  const [minExp, setMinExp] = useState<string>('');
+  //1. min exp input and filter
 
   const handleExpChange = (event: SelectChangeEvent) => {
     const value = event.target.value;
@@ -64,11 +66,23 @@ function App() {
       // If value is empty, dispatch the original array
       dispatch(setFilteredData(originalData));
     }
+
+    // Reset filters when "None" is selected
+    if (value === '') {
+      resetFilters();
+    }
   };
 
-  // location input and filter
+  // Compute available minExp values from the filtered data
+  const availableMinExpValues = useMemo(() => {
+    const expValues = FilteredData.map((data: any) => data.minExp);
+    return [...new Set(expValues)]; // Remove duplicates
+  }, [FilteredData]);
 
-  const [loc, setLoc] = useState<string>('');
+  // All possible minExp values
+  const providedExpValues = [1, 2, 3, 5, 6, 7, 8, 9, 10]; // Adjust according to your needs
+
+  //2. location input and filter
 
   const handleLocationChange = (event: SelectChangeEvent) => {
     const value = event.target.value;
@@ -84,11 +98,30 @@ function App() {
       // If value is empty, dispatch the original array
       dispatch(setFilteredData(originalData));
     }
+
+    // Reset filters when "None" is selected
+    if (value === '') {
+      resetFilters();
+    }
   };
 
-  // role input and filter
+  // Compute available location values from the filtered data
+  const availableLocationValues = useMemo(() => {
+    const locationValues = FilteredData.map((data: any) => data.location);
+    return [...new Set(locationValues)]; // Remove duplicates
+  }, [FilteredData]);
 
-  const [role, setRole] = useState<string>('');
+  // All possible location values
+  const providedLocations = [
+    'chennai',
+    'mumbai',
+    'delhi ncr',
+    'bangalore',
+    'remote',
+    'onsite',
+  ]; // Adjust according to your needs
+
+  //3. role input and filter
 
   const handleRoleChange = (event: SelectChangeEvent) => {
     const value = event.target.value;
@@ -104,27 +137,22 @@ function App() {
       // If value is empty, dispatch the original array
       dispatch(setFilteredData(originalData));
     }
+
+    // Reset filters when "None" is selected
+    if (value === '') {
+      resetFilters();
+    }
   };
 
-  // location input and filter
+  // Compute available role values from the filtered data
+  const availableRoleValues = useMemo(() => {
+    const RoleValues = FilteredData.map((data: any) => data.jobRole);
+    return [...new Set(RoleValues)]; // Remove duplicates
+  }, [FilteredData]);
 
-  // const [loc, setLoc] = useState<string>('');
+  // All possible role values
+  const providedRoles = ['tech lead', 'frontend', 'ios', 'android', 'backend']; // Adjust according to your needs
 
-  // const handleLocationChange = (event: SelectChangeEvent) => {
-  //   const value = event.target.value;
-  //   setLoc(value);
-
-  //   // Check if value exists
-  //   if (value) {
-  //     const location = FilteredData?.filter(
-  //       (data: any) => data?.location === value
-  //     );
-  //     dispatch(setFilteredData(location));
-  //   } else {
-  //     // If value is empty, dispatch the original array
-  //     dispatch(setFilteredData(originalData));
-  //   }
-  // };
   //initial api call
   useEffect(() => {
     const myHeaders = new Headers();
@@ -160,63 +188,43 @@ function App() {
 
   return (
     <div className='main'>
+      <p className='note'>
+        note : to reset all the values, you can select the none value in any of
+        the dropdowns(there should an existing selected value in dropdown to
+        apply reset ).{' '}
+      </p>
       <div className='fields'>
-        <FormControl sx={{ m: 1, minWidth: 120 }} size='small'>
-          <InputLabel id='demo-select-small-label'>Exp</InputLabel>
-          <Select
-            labelId='demo-select-small-label'
-            id='demo-select-small'
-            value={minExp}
-            label='Exp'
-            onChange={handleExpChange}>
-            <MenuItem value=''>
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={1}>1</MenuItem>
-            <MenuItem value={2}>2</MenuItem>
-            <MenuItem value={3}>3</MenuItem>
-            <MenuItem value={5}>5</MenuItem>
-            <MenuItem value={7}>7</MenuItem>
-            <MenuItem value={8}>8</MenuItem>
-          </Select>
-        </FormControl>
+        {/*experience filter*/}
 
-        <FormControl sx={{ m: 1, minWidth: 120 }} size='small'>
-          <InputLabel id='demo-select-small-label'>location</InputLabel>
-          <Select
-            labelId='demo-select-small-label'
-            id='demo-select-small'
-            value={loc}
-            label='location'
-            onChange={handleLocationChange}>
-            <MenuItem value=''>
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value='delhi ncr'>Delhi ncr</MenuItem>
-            <MenuItem value='chennai'>Chennai</MenuItem>
-            <MenuItem value='bangalore'>banglore</MenuItem>
-            <MenuItem value='mumbai'>Mumbai</MenuItem>
-          </Select>
-        </FormControl>
+        <CustomSelect
+          label='Exp'
+          value={minExp}
+          onChange={handleExpChange}
+          options={providedExpValues}
+          availableValues={availableMinExpValues}
+        />
 
-        <FormControl sx={{ m: 1, minWidth: 120 }} size='small'>
-          <InputLabel id='demo-select-small-label'>Role</InputLabel>
-          <Select
-            labelId='demo-select-small-label'
-            id='demo-select-small'
-            value={role}
-            label='Role'
-            onChange={handleRoleChange}>
-            <MenuItem value=''>
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value='backend'>backend</MenuItem>
-            <MenuItem value='android'>android</MenuItem>
-            <MenuItem value='ios'>ios</MenuItem>
-            <MenuItem value='frontend'>frontend</MenuItem>
-            <MenuItem value='tech lead'>tech lead</MenuItem>
-          </Select>
-        </FormControl>
+        {/*location filter*/}
+
+        <CustomSelect
+          label='location'
+          value={loc}
+          onChange={handleLocationChange}
+          options={providedLocations}
+          availableValues={availableLocationValues}
+        />
+
+        {/*role filter*/}
+
+        <CustomSelect
+          label='Role'
+          value={role}
+          onChange={handleRoleChange}
+          options={providedRoles}
+          availableValues={availableRoleValues}
+        />
+
+        {/*company name input*/}
 
         <input
           className='input'
@@ -227,6 +235,8 @@ function App() {
           onChange={handleInputChange}
         />
       </div>
+
+      {/*cards*/}
 
       <Grid
         container

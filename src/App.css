@@ -18,6 +18,12 @@
   display: flex;
   align-items: center;
   gap: 0.8rem;
+  margin-top: -6rem;
+}
+
+.note {
+  color: rgb(73, 73, 73);
+  font-size: x-small;
 }
 .input {
   background: white;
