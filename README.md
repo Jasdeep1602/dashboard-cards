@@ -1,9 +1,9 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite <br>
 
-# Run the code
-  #1.use npm i
-  #2.this will install all the node modules.
-  #3.then npm run dev 
-  #4.this will run the code in development mode.
+# Run the code<br>
+  1.use npm i <br>
+  2.this will install all the node modules. <br>
+  3.then npm run dev <br>
+  4.this will run the code in development mode. <br>
 
 
