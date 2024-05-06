@@ -14,7 +14,17 @@
   gap: 100px;
 }
 
+.fields {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
 .input {
   background: white;
   color: black;
+  height: 37px;
+  font-size: 15px;
+  padding-left: 10px;
+  border: 1px solid rgb(184, 183, 183);
+  border-radius: 4px;
 }
